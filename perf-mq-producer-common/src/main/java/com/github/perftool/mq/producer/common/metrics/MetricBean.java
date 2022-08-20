@@ -32,11 +32,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class MetricBean {
 
-    private static final String COUNT_NAME = "pf_producer_count";
+    private static final String COUNT_NAME = "pf_producer";
 
-    private static final String SUCCESS_COUNT_NAME = "pf_producer_success_count";
+    private static final String SUCCESS_COUNT_NAME = "pf_producer_success";
 
-    private static final String FAIL_COUNT_NAME = "pf_producer_fail_count";
+    private static final String FAIL_COUNT_NAME = "pf_producer_fail";
 
     private static final String SUCCESS_LATENCY_SUMMARY_NAME = "pf_producer_success_latency_summary";
 
