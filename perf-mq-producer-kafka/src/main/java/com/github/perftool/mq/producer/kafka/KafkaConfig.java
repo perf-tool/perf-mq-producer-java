@@ -39,4 +39,7 @@ public class KafkaConfig {
     @Value("${KAFKA_MESSAGE_BYTE:1024}")
     public int messageByte;
 
+    @Value("${KAFKA_IDEMPOTENCE:}")
+    public boolean idempotence;
+
 }

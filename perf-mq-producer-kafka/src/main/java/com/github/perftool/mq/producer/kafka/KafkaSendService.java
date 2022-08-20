@@ -62,6 +62,7 @@ public class KafkaSendService extends AbstractProduceThread {
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.kafkaAddr);
             props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+            props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, kafkaConfig.idempotence);
             producers.add(new KafkaProducer<>(props));
         }
     }
