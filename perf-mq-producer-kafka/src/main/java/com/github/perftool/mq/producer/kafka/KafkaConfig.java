@@ -42,4 +42,28 @@ public class KafkaConfig {
     @Value("${KAFKA_IDEMPOTENCE:}")
     public boolean idempotence;
 
+    @Value("${KAFKA_ACKS:all}")
+    public String acks;
+
+    @Value("${KAFKA_BATCH_SIZE:16}")
+    public int batchSize; // default 16kb
+
+    @Value("${KAFKA_LINGER_MS:0}")
+    public int lingerMS;
+
+    @Value("${KAFKA_COMPRESSION_TYPE:none}")
+    public String compressionType; // none, gzip, lz4, snappy, zstd
+
+    @Value("${KAFKA_SASL_ENABLE:false}")
+    public boolean saslEnable;
+
+    @Value("${KAFKA_SASL_MECHANISM:PLAIN}")
+    public String saslMechanism;
+
+    @Value("${KAFKA_SASL_USERNAME:}")
+    public String saslUsername;
+
+    @Value("${KAFKA_SASL_PASSWORD:}")
+    public String saslPassword;
+
 }

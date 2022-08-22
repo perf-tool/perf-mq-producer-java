@@ -25,9 +25,12 @@ import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
 import com.github.perftool.mq.producer.common.module.OperationType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.ArrayList;
@@ -56,13 +59,26 @@ public class KafkaSendService extends AbstractProduceThread {
     }
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         for (int i = 0; i < kafkaConfig.producerNum; i++) {
             Properties props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.kafkaAddr);
             props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, kafkaConfig.idempotence);
+            props.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.acks);
+            props.put(ProducerConfig.LINGER_MS_CONFIG, kafkaConfig.lingerMS);
+            props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, kafkaConfig.compressionType);
+            props.put(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(kafkaConfig.batchSize*1024));
+            if (kafkaConfig.saslEnable) {
+                props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
+                props.put(SaslConfigs.SASL_MECHANISM, kafkaConfig.saslMechanism);
+                String saslJaasConfig = String.format(
+                        "org.apache.kafka.common.security.plain.PlainLoginModule required %n"
+                                + "username=\"%s\" %npassword=\"%s\";",
+                        kafkaConfig.saslUsername, kafkaConfig.saslPassword);
+                props.put(SaslConfigs.SASL_JAAS_CONFIG, saslJaasConfig);
+            }
             producers.add(new KafkaProducer<>(props));
         }
     }
