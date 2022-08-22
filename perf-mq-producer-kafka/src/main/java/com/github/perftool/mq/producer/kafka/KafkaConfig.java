@@ -19,7 +19,6 @@
 
 package com.github.perftool.mq.producer.kafka;
 
-import org.apache.kafka.common.record.CompressionType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
