@@ -19,6 +19,7 @@
 
 package com.github.perftool.mq.producer.kafka;
 
+import org.apache.kafka.common.record.CompressionType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
@@ -39,20 +40,26 @@ public class KafkaConfig {
     @Value("${KAFKA_MESSAGE_BYTE:1024}")
     public int messageByte;
 
-    @Value("${KAFKA_IDEMPOTENCE:}")
+    @Value("${KAFKA_IDEMPOTENCE:false}")
     public boolean idempotence;
 
-    @Value("${KAFKA_ACKS:all}")
+    @Value("${KAFKA_ACKS:1}")
     public String acks;
 
-    @Value("${KAFKA_BATCH_SIZE:16}")
-    public int batchSize; // default 16kb
+    /**
+     * default value is 16kb
+     */
+    @Value("${KAFKA_BATCH_SIZE_KB:16}")
+    public int batchSizeKb;
 
     @Value("${KAFKA_LINGER_MS:0}")
     public int lingerMS;
 
+    /**
+     * none, gzip, lz4, snappy, zstd
+     */
     @Value("${KAFKA_COMPRESSION_TYPE:none}")
-    public String compressionType; // none, gzip, lz4, snappy, zstd
+    public String compressionType;
 
     @Value("${KAFKA_SASL_ENABLE:false}")
     public boolean saslEnable;
