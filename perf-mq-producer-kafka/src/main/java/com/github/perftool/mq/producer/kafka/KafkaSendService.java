@@ -69,7 +69,7 @@ public class KafkaSendService extends AbstractProduceThread {
             props.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.acks);
             props.put(ProducerConfig.LINGER_MS_CONFIG, kafkaConfig.lingerMS);
             props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, kafkaConfig.compressionType);
-            props.put(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(kafkaConfig.batchSizeKb *1024));
+            props.put(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(kafkaConfig.batchSizeKb * 1024));
             if (kafkaConfig.saslEnable) {
                 props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
                 props.put(SaslConfigs.SASL_MECHANISM, kafkaConfig.saslMechanism);
