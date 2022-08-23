@@ -108,7 +108,7 @@ public class KafkaSendService extends AbstractProduceThread {
         for (int i = 0; i < messageByte; i++) {
             messageBuilder.append('a' + random.nextInt(26));
         }
-        return new ProducerRecord<>(topic, 0, "key", messageBuilder.toString());
+        return new ProducerRecord<>(topic, "key", messageBuilder.toString());
     }
 
 
