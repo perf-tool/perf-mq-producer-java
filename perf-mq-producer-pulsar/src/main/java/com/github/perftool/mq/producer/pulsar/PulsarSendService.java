@@ -24,7 +24,9 @@ import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
 import com.github.perftool.mq.producer.common.module.OperationType;
+import com.github.perftool.mq.producer.common.util.NameUtil;
 import com.github.perftool.mq.producer.common.util.RandomUtil;
+import com.github.perftool.mq.producer.pulsar.util.PulsarUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
@@ -61,18 +63,20 @@ public class PulsarSendService extends AbstractProduceThread {
     public void init() throws Exception {
         PulsarClient client = PulsarClient.builder().memoryLimit(pulsarConfig.memoryLimitMb, SizeUnit.MEGA_BYTES)
                 .serviceUrl(String.format("http://%s:%s", pulsarConfig.host, pulsarConfig.port)).build();
+        List<String> topics = getTopicList();
         for (int i = 0; i < pulsarConfig.producerNum; i++) {
-            Producer<byte[]> producer = client.newProducer()
-                    .maxPendingMessages(pulsarConfig.maxPendingMessage)
-                    .enableBatching(pulsarConfig.enableBatching)
-                    .batchingMaxBytes(pulsarConfig.batchingMaxBytes)
-                    .batchingMaxMessages(pulsarConfig.batchingMaxMessages)
-                    .batchingMaxPublishDelay(pulsarConfig.batchingMaxPublishDelay, TimeUnit.MILLISECONDS)
-                    .topic(pulsarConfig.topic).create();
-            producers.add(producer);
+            for (String topic : topics){
+                Producer<byte[]> producer = client.newProducer()
+                        .maxPendingMessages(pulsarConfig.maxPendingMessage)
+                        .enableBatching(pulsarConfig.enableBatching)
+                        .batchingMaxBytes(pulsarConfig.batchingMaxBytes)
+                        .batchingMaxMessages(pulsarConfig.batchingMaxMessages)
+                        .batchingMaxPublishDelay(pulsarConfig.batchingMaxPublishDelay, TimeUnit.MILLISECONDS)
+                        .topic(topic).create();
+                producers.add(producer);
+            }
         }
     }
-
     @Override
     protected void send() {
         long startTime = System.currentTimeMillis();
@@ -95,4 +99,65 @@ public class PulsarSendService extends AbstractProduceThread {
         }
     }
 
+    private List<String> getTopicList() {
+        List<String> topics = new ArrayList<>();
+        log.info("tenant prefix name [{}].", pulsarConfig.tenantPrefix);
+        if (!pulsarConfig.tenantPrefix.isBlank()) {
+            if (pulsarConfig.namespacePrefix.isBlank()) {
+                log.info("namespace prefix name is blank.");
+                return topics;
+            }
+            List<String> namespaces = namespaces();
+            if (pulsarConfig.tenantSuffixNum == 0) {
+                String tenantName = pulsarConfig.tenantPrefix;
+                topics = topics(tenantName, namespaces);
+            } else {
+                for (int i = 0; i < pulsarConfig.tenantSuffixNum; i++) {
+                    String tenantName = NameUtil.name(pulsarConfig.tenantPrefix,
+                            i, pulsarConfig.tenantSuffixNumOfDigits);
+                    topics.addAll(topics(tenantName, namespaces));
+                }
+            }
+        } else {
+            if (pulsarConfig.topicSuffixNum == 0) {
+                topics.add(PulsarUtils.topicFn(pulsarConfig.tenant, pulsarConfig.namespace, pulsarConfig.topic));
+            } else {
+                for (int i = 0; i < pulsarConfig.topicSuffixNum; i++) {
+                    topics.add(PulsarUtils.topicFn(pulsarConfig.tenant, pulsarConfig.namespace,
+                            pulsarConfig.topic + i));
+                }
+            }
+        }
+        return topics;
+    }
+
+    private List<String> namespaces() {
+        List<String> namespaceNames = new ArrayList<>();
+        if (pulsarConfig.namespaceSuffixNum == 0) {
+            namespaceNames.add(pulsarConfig.namespacePrefix);
+        }
+        for (int i = 0; i < pulsarConfig.namespaceSuffixNum; i++) {
+            String namespaceName = NameUtil.name(pulsarConfig.namespacePrefix, i
+                    , pulsarConfig.namespaceSuffixNumOfDigits);
+            namespaceNames.add(namespaceName);
+        }
+        return namespaceNames;
+    }
+
+    private List<String> topics(String tenantName, List<String> namespaceNames) {
+        List<String> topics = new ArrayList<>();
+        if (pulsarConfig.topicSuffixNum == 0) {
+            for (String namespaceName : namespaceNames) {
+                topics.add(PulsarUtils.topicFn(tenantName, namespaceName, pulsarConfig.topic));
+            }
+        } else {
+            for (int i = 0; i < pulsarConfig.topicSuffixNum; i++) {
+                String topicName = NameUtil.name(pulsarConfig.topic, i, pulsarConfig.topicSuffixNumOfDigits);
+                for (String namespaceName : namespaceNames) {
+                    topics.add(PulsarUtils.topicFn(tenantName, namespaceName, topicName));
+                }
+            }
+        }
+        return topics;
+    }
 }

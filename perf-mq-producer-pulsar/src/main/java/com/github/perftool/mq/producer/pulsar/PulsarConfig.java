@@ -48,6 +48,38 @@ public class PulsarConfig {
     @Value("${PULSAR_MAX_PENDING_MESSAGE:1000}")
     public int maxPendingMessage;
 
+
+    @Value("${PULSAR_TENANT:public}")
+    public String tenant;
+
+    @Value("${PULSAR_TENANT_PREFIX:}")
+    public String tenantPrefix;
+
+    @Value("${PULSAR_TENANT_SUFFIX_NUM:0}")
+    public int tenantSuffixNum;
+
+    @Value("${PULSAR_TENANT_SUFFIX_NUM_OF_DIGITS:0}")
+    public int tenantSuffixNumOfDigits;
+
+    @Value("${PULSAR_NAMESPACE:default}")
+    public String namespace;
+
+    @Value("${PULSAR_NAMESPACE_PREFIX:}")
+    public String namespacePrefix;
+
+    @Value("${PULSAR_NAMESPACE_SUFFIX_NUM:0}")
+    public int namespaceSuffixNum;
+
+    @Value("${PULSAR_NAMESPACE_SUFFIX_NUM_OF_DIGITS:0}")
+    public int namespaceSuffixNumOfDigits;
+
+    @Value("${PULSAR_TOPIC_SUFFIX_NUM:0}")
+    public int topicSuffixNum;
+
+    @Value("${PULSAR_TOPIC_SUFFIX_NUM_OF_DIGITS:0}")
+    public int topicSuffixNumOfDigits;
+
+
     @Value("${PULSAR_ENABLE_BATCHING:true}")
     public boolean enableBatching;
 
