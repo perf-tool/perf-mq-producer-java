@@ -77,6 +77,7 @@ public class PulsarSendService extends AbstractProduceThread {
             }
         }
     }
+
     @Override
     protected void send() {
         long startTime = System.currentTimeMillis();

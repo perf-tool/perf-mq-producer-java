@@ -36,19 +36,6 @@ public class PulsarConfig {
     @Value("${PULSAR_PRODUCER_NUM_PER_THREAD:1}")
     public int producerNum;
 
-    @Value("${PULSAR_TOPIC:topic}")
-    public String topic;
-
-    @Value("${PULSAR_MESSAGE_BYTE:1024}")
-    public int messageByte;
-
-    @Value("${PULSAR_MEMORY_LIMIT_MB:50}")
-    public int memoryLimitMb;
-
-    @Value("${PULSAR_MAX_PENDING_MESSAGE:1000}")
-    public int maxPendingMessage;
-
-
     @Value("${PULSAR_TENANT:public}")
     public String tenant;
 
@@ -79,6 +66,17 @@ public class PulsarConfig {
     @Value("${PULSAR_TOPIC_SUFFIX_NUM_OF_DIGITS:0}")
     public int topicSuffixNumOfDigits;
 
+    @Value("${PULSAR_TOPIC:topic}")
+    public String topic;
+
+    @Value("${PULSAR_MESSAGE_BYTE:1024}")
+    public int messageByte;
+
+    @Value("${PULSAR_MEMORY_LIMIT_MB:50}")
+    public int memoryLimitMb;
+
+    @Value("${PULSAR_MAX_PENDING_MESSAGE:1000}")
+    public int maxPendingMessage;
 
     @Value("${PULSAR_ENABLE_BATCHING:true}")
     public boolean enableBatching;
