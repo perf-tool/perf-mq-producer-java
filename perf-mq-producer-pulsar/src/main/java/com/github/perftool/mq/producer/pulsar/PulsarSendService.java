@@ -83,7 +83,7 @@ public class PulsarSendService extends AbstractProduceThread {
         long startTime = System.currentTimeMillis();
         try {
             CompletableFuture<MessageId> messageIdCompletableFuture = producers
-                    .get(random.nextInt(pulsarConfig.producerNum))
+                    .get(random.nextInt(producers.size()))
                     .sendAsync(RandomUtil.getRandomBytes(pulsarConfig.messageByte));
             messageIdCompletableFuture.whenComplete((messageId, throwable) -> {
                 if (throwable != null) {

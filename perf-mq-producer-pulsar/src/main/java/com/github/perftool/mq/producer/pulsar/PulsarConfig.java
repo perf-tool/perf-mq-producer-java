@@ -33,9 +33,6 @@ public class PulsarConfig {
     @Value("${PULSAR_PORT:8080}")
     public int port;
 
-    @Value("${PULSAR_PRODUCER_NUM_PER_THREAD:1}")
-    public int producerNum;
-
     @Value("${PULSAR_TENANT:public}")
     public String tenant;
 
@@ -65,6 +62,9 @@ public class PulsarConfig {
 
     @Value("${PULSAR_TOPIC_SUFFIX_NUM_OF_DIGITS:0}")
     public int topicSuffixNumOfDigits;
+
+    @Value("${PULSAR_PRODUCER_NUM_PER_TOPIC_PER_THREAD:1}")
+    public int producerNum;
 
     @Value("${PULSAR_TOPIC:topic}")
     public String topic;
