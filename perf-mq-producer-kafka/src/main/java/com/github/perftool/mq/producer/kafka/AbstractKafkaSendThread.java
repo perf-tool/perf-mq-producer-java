@@ -31,7 +31,6 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
-import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +38,18 @@ import java.util.Properties;
 import java.util.Random;
 
 @Slf4j
-public class KafkaSendService extends AbstractProduceThread {
+public abstract class AbstractKafkaSendThread<T> extends AbstractProduceThread {
 
     private final KafkaConfig kafkaConfig;
 
-    private final List<KafkaProducer<String, String>> producers;
+    private final List<KafkaProducer<T, T>> producers;
 
     private final Random random;
 
     private final MetricBean metricBean;
 
-    public KafkaSendService(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
-                            KafkaConfig kafkaConfig) {
+    public AbstractKafkaSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
+                                   KafkaConfig kafkaConfig) {
         super(index, metricFactory, threadConfig);
         this.kafkaConfig = kafkaConfig;
         this.producers = new ArrayList<>();
@@ -63,8 +62,8 @@ public class KafkaSendService extends AbstractProduceThread {
         for (int i = 0; i < kafkaConfig.producerNum; i++) {
             Properties props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.kafkaAddr);
-            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, getValueSerializerName());
+            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, getValueSerializerName());
             props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, kafkaConfig.idempotence);
             props.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.acks);
             props.put(ProducerConfig.LINGER_MS_CONFIG, kafkaConfig.lingerMS);
@@ -87,7 +86,7 @@ public class KafkaSendService extends AbstractProduceThread {
     protected void send() {
         long startTime = System.currentTimeMillis();
         try {
-            ProducerRecord<String, String> record = getRecord(kafkaConfig.topic, kafkaConfig.messageByte);
+            ProducerRecord<T, T> record = getRecord(kafkaConfig.topic, kafkaConfig.messageByte);
             producers.get(random.nextInt(kafkaConfig.producerNum)).send(record, (recordMetadata, e) -> {
                 if (e != null) {
                     metricBean.fail(System.currentTimeMillis() - startTime);
@@ -103,13 +102,9 @@ public class KafkaSendService extends AbstractProduceThread {
         }
     }
 
-    private ProducerRecord<String, String> getRecord(String topic, int messageByte) {
-        StringBuilder messageBuilder = new StringBuilder(messageByte);
-        for (int i = 0; i < messageByte; i++) {
-            messageBuilder.append('a' + random.nextInt(26));
-        }
-        return new ProducerRecord<>(topic, messageBuilder.toString());
-    }
+    protected abstract String getValueSerializerName();
+
+    protected abstract ProducerRecord<T, T> getRecord(String topic, int messageByte);
 
 
 }

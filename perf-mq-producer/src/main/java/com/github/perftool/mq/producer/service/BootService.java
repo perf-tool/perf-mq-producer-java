@@ -19,6 +19,7 @@
 
 package com.github.perftool.mq.producer.service;
 
+import com.github.perftool.mq.producer.common.module.SerializeType;
 import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.CommonConfig;
@@ -27,9 +28,10 @@ import com.github.perftool.mq.producer.common.metrics.MetricFactory;
 import com.github.perftool.mq.producer.common.service.MetricsService;
 import com.github.perftool.mq.producer.http.HttpConfig;
 import com.github.perftool.mq.producer.http.HttpSendService;
+import com.github.perftool.mq.producer.kafka.AbstractKafkaBytesSendThread;
 import com.github.perftool.mq.producer.kafka.KafkaConfig;
-import com.github.perftool.mq.producer.kafka.KafkaSendService;
 import com.github.perftool.mq.producer.common.module.ProduceType;
+import com.github.perftool.mq.producer.kafka.AbstractKafkaStringSendThread;
 import com.github.perftool.mq.producer.mqtt.MqttConfig;
 import com.github.perftool.mq.producer.mqtt.MqttSendService;
 import com.github.perftool.mq.producer.pulsar.PulsarConfig;
@@ -84,7 +86,11 @@ public class BootService {
             if (pfConfig.produceType.equals(ProduceType.HTTP)) {
                 threads.add(new HttpSendService(i, metricFactory, threadConfig, httpConfig));
             } else if (pfConfig.produceType.equals(ProduceType.KAFKA)) {
-                threads.add(new KafkaSendService(i, metricFactory, threadConfig, kafkaConfig));
+                if (commonConfig.serializeType.equals(SerializeType.BYTES)) {
+                    threads.add(new AbstractKafkaBytesSendThread(i, metricFactory, threadConfig, kafkaConfig));
+                } else if (commonConfig.serializeType.equals(SerializeType.STRING)) {
+                    threads.add(new AbstractKafkaStringSendThread(i, metricFactory, threadConfig, kafkaConfig));
+                }
             } else if (pfConfig.produceType.equals(ProduceType.MQTT)) {
                 threads.add(new MqttSendService(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
