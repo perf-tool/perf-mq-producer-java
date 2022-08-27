@@ -27,17 +27,17 @@ import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
 import com.github.perftool.mq.producer.common.service.MetricsService;
 import com.github.perftool.mq.producer.http.HttpConfig;
-import com.github.perftool.mq.producer.http.HttpSendService;
+import com.github.perftool.mq.producer.http.HttpSendThread;
 import com.github.perftool.mq.producer.kafka.AbstractKafkaBytesSendThread;
 import com.github.perftool.mq.producer.kafka.KafkaConfig;
 import com.github.perftool.mq.producer.common.module.ProduceType;
 import com.github.perftool.mq.producer.kafka.AbstractKafkaStringSendThread;
 import com.github.perftool.mq.producer.mqtt.MqttConfig;
-import com.github.perftool.mq.producer.mqtt.MqttSendService;
+import com.github.perftool.mq.producer.mqtt.MqttSendThread;
 import com.github.perftool.mq.producer.pulsar.PulsarConfig;
-import com.github.perftool.mq.producer.pulsar.PulsarSendService;
+import com.github.perftool.mq.producer.pulsar.PulsarSendThread;
 import com.github.perftool.mq.producer.rocketmq.RocketMqConfig;
-import com.github.perftool.mq.producer.rocketmq.RocketMqService;
+import com.github.perftool.mq.producer.rocketmq.RocketMqThread;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,7 +84,7 @@ public class BootService {
         final MetricFactory metricFactory = metricsService.acquireMetricFactory(pfConfig.produceType);
         for (int i = 0; i < commonConfig.workNum; i++) {
             if (pfConfig.produceType.equals(ProduceType.HTTP)) {
-                threads.add(new HttpSendService(i, metricFactory, threadConfig, httpConfig));
+                threads.add(new HttpSendThread(i, metricFactory, threadConfig, httpConfig));
             } else if (pfConfig.produceType.equals(ProduceType.KAFKA)) {
                 if (commonConfig.serializeType.equals(SerializeType.BYTES)) {
                     threads.add(new AbstractKafkaBytesSendThread(i, metricFactory, threadConfig, kafkaConfig));
@@ -92,11 +92,11 @@ public class BootService {
                     threads.add(new AbstractKafkaStringSendThread(i, metricFactory, threadConfig, kafkaConfig));
                 }
             } else if (pfConfig.produceType.equals(ProduceType.MQTT)) {
-                threads.add(new MqttSendService(i, metricFactory, threadConfig, mqttConfig));
+                threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
-                threads.add(new PulsarSendService(i, metricFactory, threadConfig, pulsarConfig));
+                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
-                threads.add(new RocketMqService(i, metricFactory, threadConfig, rocketMqConfig));
+                threads.add(new RocketMqThread(i, metricFactory, threadConfig, rocketMqConfig));
             }
         }
         for (AbstractProduceThread thread : threads) {

@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
-public class RocketMqService extends AbstractProduceThread {
+public class RocketMqThread extends AbstractProduceThread {
 
     private final RocketMqConfig config;
 
@@ -48,7 +48,7 @@ public class RocketMqService extends AbstractProduceThread {
 
     private final MetricBean metricBean;
 
-    public RocketMqService(int index, MetricFactory metricFactory, ThreadConfig config, RocketMqConfig rocketMqConfig) {
+    public RocketMqThread(int index, MetricFactory metricFactory, ThreadConfig config, RocketMqConfig rocketMqConfig) {
         super(index, metricFactory, config);
         this.config = rocketMqConfig;
         this.producers = new ArrayList<>();
