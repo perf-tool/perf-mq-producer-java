@@ -27,7 +27,8 @@ import org.apache.kafka.common.serialization.ByteArraySerializer;
 
 public class AbstractKafkaBytesSendThread extends AbstractKafkaSendThread<byte[]> {
 
-    public AbstractKafkaBytesSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig, KafkaConfig kafkaConfig) {
+    public AbstractKafkaBytesSendThread(int index, MetricFactory metricFactory,
+                                        ThreadConfig threadConfig, KafkaConfig kafkaConfig) {
         super(index, metricFactory, threadConfig, kafkaConfig);
     }
 

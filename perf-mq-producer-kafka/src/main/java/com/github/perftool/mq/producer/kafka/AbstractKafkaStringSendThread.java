@@ -27,7 +27,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 public class AbstractKafkaStringSendThread extends AbstractKafkaSendThread<String> {
 
-    public AbstractKafkaStringSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig, KafkaConfig kafkaConfig) {
+    public AbstractKafkaStringSendThread(int index, MetricFactory metricFactory,
+                                         ThreadConfig threadConfig, KafkaConfig kafkaConfig) {
         super(index, metricFactory, threadConfig, kafkaConfig);
     }
 
