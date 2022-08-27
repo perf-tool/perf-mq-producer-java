@@ -17,21 +17,10 @@
  * under the License.
  */
 
-package com.github.perftool.mq.producer.common.config;
+package com.github.perftool.mq.producer.common.module;
 
-import com.github.perftool.mq.producer.common.module.SerializeType;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
+public enum SerializeType {
 
-@Configuration
-@Service
-public class CommonConfig {
-
-    @Value("${WORK_NUM:1}")
-    public int workNum;
-
-    @Value("${SERIALIZE_TYPE:BYTES}")
-    public SerializeType serializeType;
-
+    BYTES,
+    STRING,
 }
