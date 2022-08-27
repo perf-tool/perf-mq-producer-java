@@ -40,7 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class PulsarSendService extends AbstractProduceThread {
+public class PulsarSendThread extends AbstractProduceThread {
 
     private final PulsarConfig pulsarConfig;
 
@@ -50,8 +50,8 @@ public class PulsarSendService extends AbstractProduceThread {
 
     private final MetricBean metricBean;
 
-    public PulsarSendService(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
-                             PulsarConfig pulsarConfig) {
+    public PulsarSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
+                            PulsarConfig pulsarConfig) {
         super(index, metricFactory, threadConfig);
         this.producers = new ArrayList<>();
         this.pulsarConfig = pulsarConfig;

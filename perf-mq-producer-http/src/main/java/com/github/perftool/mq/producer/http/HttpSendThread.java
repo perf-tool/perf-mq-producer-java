@@ -38,7 +38,7 @@ import org.apache.hc.core5.reactor.IOReactorConfig;
 import org.apache.hc.core5.util.Timeout;
 
 @Slf4j
-public class HttpSendService extends AbstractProduceThread {
+public class HttpSendThread extends AbstractProduceThread {
 
     private final HttpConfig httpConfig;
 
@@ -46,7 +46,7 @@ public class HttpSendService extends AbstractProduceThread {
 
     private final MetricBean metricBean;
 
-    public HttpSendService(int index, MetricFactory metricFactory, ThreadConfig threadConfig, HttpConfig httpConfig) {
+    public HttpSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig, HttpConfig httpConfig) {
         super(index, metricFactory, threadConfig);
         this.httpConfig = httpConfig;
         this.metricBean = newMetricBean(OperationType.PRODUCE);

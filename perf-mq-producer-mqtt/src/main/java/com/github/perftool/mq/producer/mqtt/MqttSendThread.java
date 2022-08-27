@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
-public class MqttSendService extends AbstractProduceThread {
+public class MqttSendThread extends AbstractProduceThread {
 
     private final MqttConfig mqttConfig;
 
@@ -45,7 +45,7 @@ public class MqttSendService extends AbstractProduceThread {
 
     private final MetricBean metricBean;
 
-    public MqttSendService(int index, MetricFactory metricFactory, ThreadConfig config, MqttConfig mqttConfig) {
+    public MqttSendThread(int index, MetricFactory metricFactory, ThreadConfig config, MqttConfig mqttConfig) {
         super(index, metricFactory, config);
         this.mqttConfig = mqttConfig;
         this.mqttClients = new ArrayList<>();
