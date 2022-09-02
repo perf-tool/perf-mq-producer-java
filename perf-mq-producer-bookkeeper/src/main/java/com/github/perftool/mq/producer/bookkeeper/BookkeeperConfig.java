@@ -30,4 +30,39 @@ public class BookkeeperConfig {
     @Value("${BOOKKEEPER_ZOOKEEPER_SERVERS:localhost:2181}")
     public String servers;
 
+    @Value("${BOOKKEEPER_NUM_IO_THREADS:1}")
+    public int ioThreads;
+
+    @Value("${BOOKKEEPER_NUM_WORKER_THREADS:1}")
+    public int workerThreads;
+
+    @Value("${BOOKKEEPER_LEDGER_NUM_PRE_THREAD:1}")
+    public int ledgerNum;
+
+    @Value("${BOOKKEEPER_LEDGER_ROTATE_SECONDS:300}")
+    public int ledgerRotateSeconds;
+
+    @Value("${BOOKKEEPER_LEDGER_ENSEMBLE_SIZE:1}")
+    public int ledgerEnsembleSize;
+
+    @Value("${BOOKKEEPER_LEDGER_WRITE_QUORUM_SIZE:1}")
+    public int ledgerWriteQuorumSize;
+
+    @Value("${BOOKKEEPER_LEDGER_ACK_QUORUM_SIZE:1}")
+    public int ledgerAckQuorumSize;
+
+    @Value("${BOOKKEEPER_ADD_ENTRY_TIMEOUT_SECONDS:30}")
+    public int addEntryTimeoutSeconds;
+
+    @Value("${BOOKKEEPER_READ_ENTRY_TIMEOUT_SECONDS:30}")
+    public int readEntryTimeoutSeconds;
+
+    @Value("${BOOKKEEPER_NUM_CHANNELS_PER_BOOKIE:4}")
+    public int channelsPerBookie;
+
+    @Value("${BOOKKEEPER_USE_V2_WIRE_PROTOCOL:false}")
+    public boolean useV2WireProtocol;
+
+    @Value("${BOOKKEEPER_MESSAGE_BYTE:1024}")
+    public int messageByte;
 }

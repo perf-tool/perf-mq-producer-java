@@ -1,5 +1,10 @@
 # perf-mq-producer
 
+## prometheus interface
+```bash
+curl localhost:20002/actuator/prometheus
+```
+
 ## start skywalking
 
 configure environment:

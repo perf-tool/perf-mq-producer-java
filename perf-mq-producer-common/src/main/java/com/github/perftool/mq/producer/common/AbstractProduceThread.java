@@ -81,7 +81,7 @@ public abstract class AbstractProduceThread extends Thread {
             return;
         }
 
-        while (System.currentTimeMillis() - endTime <= 0) {
+        while (endTime == -1 || System.currentTimeMillis() - endTime <= 0) {
             command.run();
         }
     }
