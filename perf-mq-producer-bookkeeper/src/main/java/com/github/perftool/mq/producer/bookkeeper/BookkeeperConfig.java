@@ -17,13 +17,17 @@
  * under the License.
  */
 
-package com.github.perftool.mq.producer.common.module;
+package com.github.perftool.mq.producer.bookkeeper;
 
-public enum OperationType {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
-    PRODUCE,
-    INSERT,
-    UPDATE,
-    DELETE
+@Configuration
+@Service
+public class BookkeeperConfig {
+
+    @Value("${BOOKKEEPER_ZOOKEEPER_SERVERS:localhost:2181}")
+    public String servers;
 
 }

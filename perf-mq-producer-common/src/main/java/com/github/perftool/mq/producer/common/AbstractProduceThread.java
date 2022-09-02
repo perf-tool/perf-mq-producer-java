@@ -22,7 +22,6 @@ package com.github.perftool.mq.producer.common;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
-import com.github.perftool.mq.producer.common.module.OperationType;
 import com.google.common.util.concurrent.RateLimiter;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -89,8 +88,8 @@ public abstract class AbstractProduceThread extends Thread {
 
     protected abstract void send();
 
-    protected MetricBean newMetricBean(OperationType operationType) {
-        return metricFactory.newMetricBean(operationType);
+    protected MetricBean newMetricBean() {
+        return metricFactory.newMetricBean();
     }
 
 }

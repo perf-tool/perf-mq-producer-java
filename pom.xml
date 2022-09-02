@@ -31,6 +31,7 @@
         <module>perf-mq-producer-mqtt</module>
         <module>perf-mq-producer-pulsar</module>
         <module>perf-mq-producer-rocketmq</module>
+        <module>perf-mq-producer-bookkeeper</module>
     </modules>
 
     <properties>

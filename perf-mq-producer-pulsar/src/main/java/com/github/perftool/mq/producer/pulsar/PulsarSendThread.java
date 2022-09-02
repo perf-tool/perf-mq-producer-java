@@ -23,7 +23,6 @@ import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
-import com.github.perftool.mq.producer.common.module.OperationType;
 import com.github.perftool.mq.producer.common.util.NameUtil;
 import com.github.perftool.mq.producer.common.util.RandomUtil;
 import com.github.perftool.mq.producer.pulsar.util.PulsarUtils;
@@ -56,7 +55,7 @@ public class PulsarSendThread extends AbstractProduceThread {
         this.producers = new ArrayList<>();
         this.pulsarConfig = pulsarConfig;
         this.random = new Random();
-        this.metricBean = newMetricBean(OperationType.PRODUCE);
+        this.metricBean = newMetricBean();
     }
 
     @Override

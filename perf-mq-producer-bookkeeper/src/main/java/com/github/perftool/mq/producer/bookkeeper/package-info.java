@@ -17,26 +17,4 @@
  * under the License.
  */
 
-package com.github.perftool.mq.producer.common.metrics;
-
-import com.github.perftool.mq.producer.common.module.ProduceType;
-import io.micrometer.core.instrument.MeterRegistry;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-public class MetricFactory {
-
-    private final MeterRegistry meterRegistry;
-
-    private final ProduceType produceType;
-
-    public MetricFactory(MeterRegistry meterRegistry, ProduceType produceType) {
-        this.meterRegistry = meterRegistry;
-        this.produceType = produceType;
-    }
-
-    public MetricBean newMetricBean() {
-        return new MetricBean(meterRegistry, produceType);
-    }
-
-}
+package com.github.perftool.mq.producer.bookkeeper;

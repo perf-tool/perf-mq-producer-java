@@ -19,7 +19,6 @@
 
 package com.github.perftool.mq.producer.common.metrics;
 
-import com.github.perftool.mq.producer.common.module.OperationType;
 import com.github.perftool.mq.producer.common.module.ProduceType;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
@@ -60,12 +59,10 @@ public class MetricBean {
 
     private final Timer failTimer;
 
-    public MetricBean(MeterRegistry meterRegistry, ProduceType produceType, OperationType operationType) {
+    public MetricBean(MeterRegistry meterRegistry, ProduceType produceType) {
         String[] tags = new String[]{
                 "produce_type",
                 produceType.toString(),
-                "operation_type",
-                operationType.toString()
         };
         this.counter = meterRegistry.counter(COUNT_NAME, tags);
         this.successCounter = meterRegistry.counter(SUCCESS_COUNT_NAME, tags);
