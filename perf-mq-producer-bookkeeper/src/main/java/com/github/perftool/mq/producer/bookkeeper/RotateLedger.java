@@ -54,10 +54,7 @@ public class RotateLedger {
         this.random = new Random();
         this.rotateSeconds = conf.ledgerRotateSeconds;
         this.randomSecondsOffset = conf.ledgerRotateSeconds / 10;
-        this.ledgerHandle = bookKeeper.createLedger(conf.ledgerEnsembleSize, conf.ledgerWriteQuorumSize,
-                conf.ledgerAckQuorumSize, BookKeeper.DigestType.CRC32, "".getBytes(StandardCharsets.UTF_8));
-        this.lastRotateTime = System.currentTimeMillis();
-        this.nextRotateTime = lastRotateTime + rotateSeconds * 1000L + random.nextInt(randomSecondsOffset * 1000);
+        checkRotateLedger(conf);
     }
 
     public void send(byte[] bytes, AsyncCallback.AddCallback cb) throws Exception {
