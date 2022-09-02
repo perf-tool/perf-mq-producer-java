@@ -25,28 +25,29 @@ import lombok.extern.slf4j.Slf4j;
 public class HttpUtil {
 
     public static String getHttpData() {
-        return "{\n"
-                + "      \"name\": \"Avengers: Endgame\",\n"
-                + "      \"years\": 2019,\n"
-                + "      \"like\": true,\n"
-                + "      \"heroes\": [\n"
-                + "        {\n"
-                + "          \"name\": \"Tony Stark\",\n"
-                + "          \"nickName\": \"Iron Man\",\n"
-                + "          \"actor\": \"Robert Downey\",\n"
-                + "          \"age\": 48\n"
-                + "        }, {\n"
-                + "          \"name\": \"Steve Rogers\",\n"
-                + "          \"nickName\": \"Captain America\",\n"
-                + "          \"actor\": \"Chris Evans\",\n"
-                + "          \"age\": 100\n"
-                + "        }],\n"
-                + "      \"marvelInfo\": {\n"
-                + "        \"sequence\": 22,\n"
-                + "        \"hasIronMan\": true\n"
-                + "      },\n"
-                + "      \"null\": null\n"
-                + "    }";
+        return """
+                {
+                      "name": "Avengers: Endgame",
+                      "years": 2019,
+                      "like": true,
+                      "heroes": [
+                        {
+                          "name": "Tony Stark",
+                          "nickName": "Iron Man",
+                          "actor": "Robert Downey",
+                          "age": 48
+                        }, {
+                          "name": "Steve Rogers",
+                          "nickName": "Captain America",
+                          "actor": "Chris Evans",
+                          "age": 100
+                        }],
+                      "marvelInfo": {
+                        "sequence": 22,
+                        "hasIronMan": true
+                      },
+                      "null": null
+                    }""";
     }
 
 }

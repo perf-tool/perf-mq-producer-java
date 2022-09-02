@@ -23,7 +23,6 @@ import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
-import com.github.perftool.mq.producer.common.module.OperationType;
 import com.github.perftool.mq.producer.common.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -53,7 +52,7 @@ public class RocketMqThread extends AbstractProduceThread {
         this.config = rocketMqConfig;
         this.producers = new ArrayList<>();
         this.random = new Random();
-        this.metricBean = newMetricBean(OperationType.PRODUCE);
+        this.metricBean = newMetricBean();
 
     }
 

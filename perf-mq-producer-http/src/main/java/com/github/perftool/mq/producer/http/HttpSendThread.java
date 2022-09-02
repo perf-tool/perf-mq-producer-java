@@ -23,7 +23,6 @@ import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
-import com.github.perftool.mq.producer.common.module.OperationType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
@@ -49,7 +48,7 @@ public class HttpSendThread extends AbstractProduceThread {
     public HttpSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig, HttpConfig httpConfig) {
         super(index, metricFactory, threadConfig);
         this.httpConfig = httpConfig;
-        this.metricBean = newMetricBean(OperationType.PRODUCE);
+        this.metricBean = newMetricBean();
     }
 
     @Override

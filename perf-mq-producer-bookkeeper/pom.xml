@@ -29,7 +29,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>perf-mq-producer-rocketmq</artifactId>
+    <artifactId>perf-mq-producer-bookkeeper</artifactId>
 
     <dependencies>
         <dependency>
@@ -46,9 +46,9 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>4.9.4</version>
+            <groupId>org.apache.bookkeeper</groupId>
+            <artifactId>bookkeeper-server</artifactId>
+            <version>4.15.1</version>
         </dependency>
     </dependencies>
 
