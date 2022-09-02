@@ -34,6 +34,11 @@
     <dependencies>
         <dependency>
             <groupId>com.github.perftool</groupId>
+            <artifactId>perf-mq-producer-bookkeeper</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.perftool</groupId>
             <artifactId>perf-mq-producer-http</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

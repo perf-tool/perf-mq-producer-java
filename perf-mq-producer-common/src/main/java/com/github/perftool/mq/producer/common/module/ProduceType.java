@@ -25,6 +25,7 @@ public enum ProduceType {
     // protocol
     HTTP,
     // middleware
+    BOOKKEEPER,
     KAFKA,
     MQTT,
     PULSAR,

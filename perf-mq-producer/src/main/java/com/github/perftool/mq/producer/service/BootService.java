@@ -19,6 +19,8 @@
 
 package com.github.perftool.mq.producer.service;
 
+import com.github.perftool.mq.producer.bookkeeper.BookkeeperConfig;
+import com.github.perftool.mq.producer.bookkeeper.BookkeeperSendThread;
 import com.github.perftool.mq.producer.common.module.SerializeType;
 import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
@@ -63,6 +65,9 @@ public class BootService {
     private HttpConfig httpConfig;
 
     @Autowired
+    private BookkeeperConfig bookkeeperConfig;
+
+    @Autowired
     private KafkaConfig kafkaConfig;
 
     @Autowired
@@ -85,6 +90,8 @@ public class BootService {
         for (int i = 0; i < commonConfig.workNum; i++) {
             if (pfConfig.produceType.equals(ProduceType.HTTP)) {
                 threads.add(new HttpSendThread(i, metricFactory, threadConfig, httpConfig));
+            } else if (pfConfig.produceType.equals(ProduceType.BOOKKEEPER)) {
+                threads.add(new BookkeeperSendThread(i, metricFactory, threadConfig, bookkeeperConfig));
             } else if (pfConfig.produceType.equals(ProduceType.KAFKA)) {
                 if (commonConfig.serializeType.equals(SerializeType.BYTES)) {
                     threads.add(new AbstractKafkaBytesSendThread(i, metricFactory, threadConfig, kafkaConfig));
