@@ -25,13 +25,13 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>perf-mq-producer</module>
+        <module>perf-mq-producer-bookkeeper</module>
         <module>perf-mq-producer-common</module>
         <module>perf-mq-producer-http</module>
         <module>perf-mq-producer-kafka</module>
         <module>perf-mq-producer-mqtt</module>
         <module>perf-mq-producer-pulsar</module>
         <module>perf-mq-producer-rocketmq</module>
-        <module>perf-mq-producer-bookkeeper</module>
     </modules>
 
     <properties>
