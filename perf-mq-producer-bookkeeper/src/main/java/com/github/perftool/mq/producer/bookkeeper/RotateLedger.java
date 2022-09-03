@@ -70,10 +70,12 @@ public class RotateLedger {
             return;
         }
         if (this.ledgerHandle != null) {
+            long ledgerId = ledgerHandle.getId();
             try {
                 this.ledgerHandle.close();
+                bookKeeper.deleteLedger(ledgerId);
             } catch (Exception e) {
-                log.error("ledger id {} close error", ledgerHandle.getId(), e);
+                log.error("ledger id {} close error", ledgerId, e);
             }
         }
         try {
