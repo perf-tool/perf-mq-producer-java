@@ -61,7 +61,9 @@ public class PulsarSendThread extends AbstractProduceThread {
     @Override
     public void init() throws Exception {
         PulsarClient client = PulsarClient.builder().memoryLimit(pulsarConfig.memoryLimitMb, SizeUnit.MEGA_BYTES)
-                .serviceUrl(String.format("http://%s:%s", pulsarConfig.host, pulsarConfig.port)).build();
+                .ioThreads(pulsarConfig.pulsarIoThreads)
+                .serviceUrl(String.format("%s://%s:%s", pulsarConfig.protocol, pulsarConfig.host, pulsarConfig.port))
+                .build();
         List<String> topics = getTopicList();
         for (int i = 0; i < pulsarConfig.producerNum; i++) {
             for (String topic : topics){

@@ -115,7 +115,7 @@
                     <configLocation>./ci/checkstyle/checkstyle.xml</configLocation>
                     <suppressionsLocation>./ci/checkstyle/suppressions.xml</suppressionsLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <encoding>UTF-8</encoding>
+                    <inputEncoding>UTF-8</inputEncoding>
                     <excludes>**/proto/*</excludes>
                 </configuration>
             </plugin>

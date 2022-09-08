@@ -27,11 +27,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class PulsarConfig {
 
+    @Value("${PULSAR_PROTOCOL:http}")
+    public String protocol;
+
     @Value("${PULSAR_HOST:localhost}")
     public String host;
 
     @Value("${PULSAR_PORT:8080}")
     public int port;
+
+    @Value("${PULSAR_IO_THREADS:4}")
+    public int pulsarIoThreads;
 
     @Value("${PULSAR_TENANT:public}")
     public String tenant;
