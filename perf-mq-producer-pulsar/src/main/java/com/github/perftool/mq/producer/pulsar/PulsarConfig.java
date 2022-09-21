@@ -95,4 +95,19 @@ public class PulsarConfig {
 
     @Value("${PULSAR_BATCHING_MAX_PUBLISH_DELAY_MS:1}")
     public long batchingMaxPublishDelay;
+
+    @Value("${PULSAR_TLS_ENABLE:false}")
+    public boolean tlsEnable;
+
+    @Value("${PULSAR_KEYSTORE_PATH:}")
+    public String keyStorePath;
+
+    @Value("${PULSAR_KEYSTORE_PASSWORD:}")
+    public String keyStorePassword;
+
+    @Value("${PULSAR_TLS_TRUSTSTORE_PATH:}")
+    public String tlsTrustStorePath;
+
+    @Value("${PULSAR_TLS_TRUSTSTORE_PASSWORD:}")
+    public String tlsTrustStorePassword;
 }

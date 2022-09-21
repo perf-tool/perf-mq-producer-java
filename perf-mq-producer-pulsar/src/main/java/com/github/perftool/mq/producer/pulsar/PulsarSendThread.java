@@ -27,13 +27,16 @@ import com.github.perftool.mq.producer.common.util.NameUtil;
 import com.github.perftool.mq.producer.common.util.RandomUtil;
 import com.github.perftool.mq.producer.pulsar.util.PulsarUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pulsar.client.api.ClientBuilder;
 import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.SizeUnit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +52,10 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private final MetricBean metricBean;
 
+    private PulsarClient pulsarClient;
+
+    private static final String AUTH_PLUGIN_CLASS_NAME = "org.apache.pulsar.client.impl.auth.AuthenticationKeyStoreTls";
+
     public PulsarSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
                             PulsarConfig pulsarConfig) {
         super(index, metricFactory, threadConfig);
@@ -60,14 +67,29 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     @Override
     public void init() throws Exception {
-        PulsarClient client = PulsarClient.builder().memoryLimit(pulsarConfig.memoryLimitMb, SizeUnit.MEGA_BYTES)
-                .ioThreads(pulsarConfig.pulsarIoThreads)
-                .serviceUrl(String.format("%s://%s:%s", pulsarConfig.protocol, pulsarConfig.host, pulsarConfig.port))
-                .build();
+        ClientBuilder clientBuilder = PulsarClient.builder().memoryLimit(pulsarConfig.memoryLimitMb,
+                        SizeUnit.MEGA_BYTES).ioThreads(pulsarConfig.pulsarIoThreads);
+        if (pulsarConfig.tlsEnable) {
+            Map<String, String> map = new HashMap<>();
+            map.put("keyStoreType", "JKS");
+            map.put("keyStorePath", pulsarConfig.keyStorePath);
+            map.put("keyStorePassword", pulsarConfig.keyStorePassword);
+            pulsarClient = clientBuilder.allowTlsInsecureConnection(true).serviceUrl(String.format("%s://%s:%s",
+                            pulsarConfig.protocol, pulsarConfig.host, pulsarConfig.port))
+                    .enableTlsHostnameVerification(false).useKeyStoreTls(true)
+                    .tlsTrustStoreType("JKS")
+                    .tlsTrustStorePath(pulsarConfig.tlsTrustStorePath)
+                    .tlsTrustStorePassword(pulsarConfig.tlsTrustStorePassword)
+                    .authentication(AUTH_PLUGIN_CLASS_NAME, map).build();
+        } else {
+            pulsarClient = clientBuilder.serviceUrl(String.format("%s://%s:%s", pulsarConfig.protocol,
+                    pulsarConfig.host, pulsarConfig.port)).build();
+        }
+
         List<String> topics = getTopicList();
         for (int i = 0; i < pulsarConfig.producerNum; i++) {
             for (String topic : topics){
-                Producer<byte[]> producer = client.newProducer()
+                Producer<byte[]> producer = pulsarClient.newProducer()
                         .maxPendingMessages(pulsarConfig.maxPendingMessage)
                         .enableBatching(pulsarConfig.enableBatching)
                         .batchingMaxBytes(pulsarConfig.batchingMaxBytes)
