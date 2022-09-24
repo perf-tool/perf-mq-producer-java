@@ -67,8 +67,10 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     @Override
     public void init() throws Exception {
-        ClientBuilder clientBuilder = PulsarClient.builder().memoryLimit(pulsarConfig.memoryLimitMb,
-                        SizeUnit.MEGA_BYTES).ioThreads(pulsarConfig.pulsarIoThreads);
+        ClientBuilder clientBuilder = PulsarClient.builder()
+                .memoryLimit(pulsarConfig.memoryLimitMb, SizeUnit.MEGA_BYTES)
+                .ioThreads(pulsarConfig.pulsarIoThreads)
+                .maxConcurrentLookupRequests(pulsarConfig.pulsarMaxConcurrentLookupRequests);
         if (pulsarConfig.tlsEnable) {
             Map<String, String> map = new HashMap<>();
             map.put("keyStoreType", "JKS");
