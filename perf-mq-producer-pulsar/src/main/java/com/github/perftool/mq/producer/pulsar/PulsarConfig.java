@@ -39,7 +39,7 @@ public class PulsarConfig {
     @Value("${PULSAR_IO_THREADS:4}")
     public int pulsarIoThreads;
 
-    @Value("${PULSAR_MAX_CONCURRENT_LOOKUP_REQUESTS:}")
+    @Value("${PULSAR_MAX_CONCURRENT_LOOKUP_REQUESTS:5000}")
     public int pulsarMaxConcurrentLookupRequests;
 
     @Value("${PULSAR_TENANT:public}")
