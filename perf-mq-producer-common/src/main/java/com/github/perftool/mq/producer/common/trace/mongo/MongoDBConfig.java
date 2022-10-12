@@ -17,21 +17,31 @@
  * under the License.
  */
 
-package com.github.perftool.mq.producer;
+package com.github.perftool.mq.producer.common.trace.mongo;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Slf4j
-@EnableAspectJAutoProxy
-@SpringBootApplication(exclude = MongoAutoConfiguration.class)
-public class Main {
+@Component
+@Configuration
+public class MongoDBConfig {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class);
-    }
+    @Value("${MONGODB_HOST:localhost}")
+    public String mongodbHost;
 
+    @Value("${MONGODB_PORT:27017}")
+    public int mongodbPort;
+
+    @Value("${MONGODB_USERNAME:}")
+    public String mongodbUsername;
+
+    @Value("${MONGODB_PASSWORD:}")
+    public String mongodbPassword;
+
+    @Value("${MONGODB_DATABASE_NAME:trace_database1}")
+    public String mongodbDatabaseName;
+
+    @Value("${MONGODB_COLLECT_NAME:trace_collect}")
+    public String mongodbCollectionName;
 }

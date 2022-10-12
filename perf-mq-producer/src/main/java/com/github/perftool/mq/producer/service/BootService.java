@@ -22,6 +22,8 @@ package com.github.perftool.mq.producer.service;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperConfig;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperSendThread;
 import com.github.perftool.mq.producer.common.module.SerializeType;
+import com.github.perftool.mq.producer.common.trace.mongo.IMongoDBClient;
+import com.github.perftool.mq.producer.common.trace.mongo.MongoDBConfig;
 import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.CommonConfig;
@@ -82,6 +84,9 @@ public class BootService {
     @Autowired
     private MetricsService metricsService;
 
+    @Autowired
+    private MongoDBConfig mongoDBConfig;
+
     private final List<AbstractProduceThread> threads = new ArrayList<>();
 
     @PostConstruct
@@ -101,7 +106,8 @@ public class BootService {
             } else if (pfConfig.produceType.equals(ProduceType.MQTT)) {
                 threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
-                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig));
+                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
+                        new IMongoDBClient(mongoDBConfig)));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
                 threads.add(new RocketMqThread(i, metricFactory, threadConfig, rocketMqConfig));
             }

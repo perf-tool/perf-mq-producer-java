@@ -36,4 +36,9 @@ public class ThreadConfig {
     @Value("${PRODUCE_INTERVAL:0}")
     public int produceInterval;
 
+    @Value("${PULSAR_TRACE_ENABLE:false}")
+    public boolean traceEnable;
+
+    @Value("${PULSAR_SAMPLE_RATE:0.5}")
+    public double sampleRate;
 }

@@ -19,10 +19,14 @@
 
 package com.github.perftool.mq.producer.pulsar;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricBean;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
+import com.github.perftool.mq.producer.common.trace.TraceBean;
+import com.github.perftool.mq.producer.common.trace.TraceReporter;
+import com.github.perftool.mq.producer.common.trace.module.SpanInfo;
 import com.github.perftool.mq.producer.common.util.NameUtil;
 import com.github.perftool.mq.producer.common.util.RandomUtil;
 import com.github.perftool.mq.producer.pulsar.util.PulsarUtils;
@@ -38,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -54,15 +59,18 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private PulsarClient pulsarClient;
 
+    private TraceReporter traceReporter;
+
     private static final String AUTH_PLUGIN_CLASS_NAME = "org.apache.pulsar.client.impl.auth.AuthenticationKeyStoreTls";
 
     public PulsarSendThread(int index, MetricFactory metricFactory, ThreadConfig threadConfig,
-                            PulsarConfig pulsarConfig) {
+                            PulsarConfig pulsarConfig, TraceReporter traceReporter) {
         super(index, metricFactory, threadConfig);
         this.producers = new ArrayList<>();
         this.pulsarConfig = pulsarConfig;
         this.random = new Random();
         this.metricBean = newMetricBean();
+        this.traceReporter = traceReporter;
     }
 
     @Override
@@ -107,18 +115,45 @@ public class PulsarSendThread extends AbstractProduceThread {
     protected void send() {
         long startTime = System.currentTimeMillis();
         try {
-            CompletableFuture<MessageId> messageIdCompletableFuture = producers
-                    .get(random.nextInt(producers.size()))
-                    .sendAsync(RandomUtil.getRandomBytes(pulsarConfig.messageByte));
-            messageIdCompletableFuture.whenComplete((messageId, throwable) -> {
-                if (throwable != null) {
-                    metricBean.fail(System.currentTimeMillis() - startTime);
-                    log.error("error is ", throwable);
+            if (!config.traceEnable) {
+                CompletableFuture<MessageId> messageIdCompletableFuture = producers
+                        .get(random.nextInt(producers.size()))
+                        .sendAsync(RandomUtil.getRandomBytes(pulsarConfig.messageByte));
+                messageIdCompletableFuture.whenComplete((messageId, throwable) -> {
+                    if (throwable != null) {
+                        metricBean.fail(System.currentTimeMillis() - startTime);
+                        log.error("error is ", throwable);
+                    } else {
+                        metricBean.success(System.currentTimeMillis() - startTime);
+                        log.info("message id is [{}]", messageId);
+                    }
+                });
+            } else {
+                TraceBean bean = new TraceBean();
+                byte[] message = RandomUtil.getRandomBytes(pulsarConfig.messageByte);
+                HashMap<String, String> properties = new HashMap<>();
+                if (RandomUtil.getRandomByDouble() < config.sampleRate) {
+                    properties.put("isSample", "true");
+                    bean.setSample(true);
                 } else {
-                    metricBean.success(System.currentTimeMillis() - startTime);
-                    log.info("message id is [{}]", messageId);
+                    properties.put("isSample", "false");
+                    bean.setSample(false);
                 }
-            });
+                String traceId = UUID.randomUUID().toString();
+                properties.put("traceId", traceId);
+                bean.setTraceId(traceId);
+                long createTime = System.currentTimeMillis();
+                SpanInfo spanInfo = new SpanInfo();
+                spanInfo.setSendTime(createTime);
+                bean.setCreateTime(createTime);
+                ObjectMapper mapper = new ObjectMapper();
+                properties.put("spanId", mapper.writeValueAsString(spanInfo));
+                producers.get(random.nextInt(producers.size())).newMessage()
+                        .properties(properties)
+                        .value(message).sendAsync();
+                traceReporter.reportTrace(bean);
+
+            }
         } catch (Exception e) {
             metricBean.fail(System.currentTimeMillis() - startTime);
             log.error("send req exception ", e);

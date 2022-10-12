@@ -41,9 +41,12 @@ public abstract class AbstractProduceThread extends Thread {
 
     protected final MetricFactory metricFactory;
 
+    protected final ThreadConfig config;
+
     public AbstractProduceThread(int index, MetricFactory metricFactory, ThreadConfig config) {
         setName("produce-" + index);
         this.metricFactory = metricFactory;
+        this.config = config;
         this.rateLimiter = RateLimiter.create(config.produceRate);
         if (config.produceMinute == -1) {
             this.endTime = -1;
