@@ -64,6 +64,7 @@ public class IMongoDBClient implements TraceReporter {
         MongoCollection<Document> collection = database.getCollection(config.mongodbCollectionName);
         Document document = new Document("isSample", traceBean.isSample())
                 .append("traceId", traceBean.getTraceId())
+                .append("createTime", traceBean.getCreateTime())
                 .append("spanId", traceBean.getSpanId());
         collection.insertOne(document);
     }

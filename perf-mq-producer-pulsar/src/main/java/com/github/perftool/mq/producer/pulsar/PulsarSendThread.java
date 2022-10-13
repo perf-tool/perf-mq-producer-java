@@ -115,7 +115,7 @@ public class PulsarSendThread extends AbstractProduceThread {
     protected void send() {
         long startTime = System.currentTimeMillis();
         try {
-            if (!config.traceEnable) {
+            if (traceReporter == null) {
                 CompletableFuture<MessageId> messageIdCompletableFuture = producers
                         .get(random.nextInt(producers.size()))
                         .sendAsync(RandomUtil.getRandomBytes(pulsarConfig.messageByte));
