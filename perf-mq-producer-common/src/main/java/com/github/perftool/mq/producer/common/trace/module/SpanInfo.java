@@ -17,21 +17,13 @@
  * under the License.
  */
 
-package com.github.perftool.mq.producer;
+package com.github.perftool.mq.producer.common.trace.module;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import lombok.Getter;
+import lombok.Setter;
 
-@Slf4j
-@EnableAspectJAutoProxy
-@SpringBootApplication(exclude = MongoAutoConfiguration.class)
-public class Main {
-
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class);
-    }
-
+@Setter
+@Getter
+public class SpanInfo {
+    private long sendTime;
 }

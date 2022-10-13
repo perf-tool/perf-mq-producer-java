@@ -113,4 +113,5 @@ public class PulsarConfig {
 
     @Value("${PULSAR_TLS_TRUSTSTORE_PASSWORD:}")
     public String tlsTrustStorePassword;
+
 }

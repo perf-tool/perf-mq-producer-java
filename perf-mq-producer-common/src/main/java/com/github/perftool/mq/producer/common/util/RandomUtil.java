@@ -21,11 +21,13 @@ package com.github.perftool.mq.producer.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class RandomUtil {
 
+    private static Random random = new Random();
     public static String getRandomStr(int messageByte) {
         StringBuilder messageBuilder = new StringBuilder(messageByte);
         for (int i = 0; i < messageByte; i++) {
@@ -40,6 +42,10 @@ public class RandomUtil {
             array[i] = (byte) (97 + ThreadLocalRandom.current().nextInt(26));
         }
         return array;
+    }
+
+    public static double getRandomByDouble() {
+        return random.nextDouble();
     }
 
 }
