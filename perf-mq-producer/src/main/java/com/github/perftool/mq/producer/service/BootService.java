@@ -22,8 +22,8 @@ package com.github.perftool.mq.producer.service;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperConfig;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperSendThread;
 import com.github.perftool.mq.producer.common.module.SerializeType;
-import com.github.perftool.mq.producer.common.trace.mongo.IMongoDBClient;
-import com.github.perftool.mq.producer.common.trace.mongo.MongoDBConfig;
+import com.github.perftool.mq.producer.common.trace.mongo.MongoClientImpl;
+import com.github.perftool.mq.producer.common.trace.mongo.MongoConfig;
 import com.github.perftool.mq.producer.common.trace.redis.RedisClientImpl;
 import com.github.perftool.mq.producer.common.trace.redis.RedisConfig;
 import com.github.perftool.mq.producer.config.PfConfig;
@@ -87,7 +87,7 @@ public class BootService {
     private MetricsService metricsService;
 
     @Autowired
-    private MongoDBConfig mongoDBConfig;
+    private MongoConfig mongoConfig;
 
     @Autowired
     private RedisConfig redisConfig;
@@ -111,17 +111,16 @@ public class BootService {
             } else if (pfConfig.produceType.equals(ProduceType.MQTT)) {
                 threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
+                log.info("{} trace reporter.", pfConfig.traceType);
                 switch (pfConfig.traceType) {
                     case DUMMY -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
                             null));
                     case MONGO -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new IMongoDBClient(mongoDBConfig)));
+                            new MongoClientImpl(mongoConfig)));
                     case REDIS -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
                             new RedisClientImpl(redisConfig)));
 
                 }
-                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                        new IMongoDBClient(mongoDBConfig)));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
                 threads.add(new RocketMqThread(i, metricFactory, threadConfig, rocketMqConfig));
             }
