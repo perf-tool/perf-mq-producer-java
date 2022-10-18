@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Configuration
-public class MongoDBConfig {
+public class MongoConfig {
 
     @Value("${MONGODB_HOST:localhost}")
     public String mongodbHost;

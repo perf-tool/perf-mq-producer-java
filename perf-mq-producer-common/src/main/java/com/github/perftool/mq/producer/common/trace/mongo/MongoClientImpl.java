@@ -31,11 +31,11 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 
-public class IMongoDBClient implements TraceReporter {
+public class MongoClientImpl implements TraceReporter {
 
-    private MongoDBConfig config;
+    private MongoConfig config;
 
-    public IMongoDBClient(MongoDBConfig config) {
+    public MongoClientImpl(MongoConfig config) {
         this.config = config;
     }
 
