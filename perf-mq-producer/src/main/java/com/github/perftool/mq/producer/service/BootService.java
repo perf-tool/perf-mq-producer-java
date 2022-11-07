@@ -40,6 +40,7 @@ import com.github.perftool.mq.producer.pulsar.PulsarConfig;
 import com.github.perftool.mq.producer.pulsar.PulsarSendThread;
 import com.github.perftool.mq.producer.rocketmq.RocketMqConfig;
 import com.github.perftool.mq.producer.rocketmq.RocketMqThread;
+import io.github.perftool.trace.report.ReportUtil;
 import io.github.perftool.trace.report.mongo.MongoConfig;
 import io.github.perftool.trace.report.mongo.MongoTraceReporter;
 import io.github.perftool.trace.report.redis.RedisConfig;
@@ -106,15 +107,8 @@ public class BootService {
                 threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
                 log.info("{} trace reporter.", pfConfig.traceType);
-                switch (pfConfig.traceType) {
-                    case DUMMY -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            null));
-                    case MONGO -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new MongoTraceReporter(MongoConfig.fromEnv())));
-                    case REDIS -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new RedisTraceReporter(RedisConfig.fromEnv())));
-
-                }
+                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
+                            ReportUtil.getReporter()));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
                 threads.add(new RocketMqThread(i, metricFactory, threadConfig, rocketMqConfig));
             }

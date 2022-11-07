@@ -62,7 +62,7 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private PulsarClient pulsarClient;
 
-    private ITraceReporter traceReporter;
+    private final ITraceReporter traceReporter;
 
     private final String ipNumber;
 
@@ -78,8 +78,7 @@ public class PulsarSendThread extends AbstractProduceThread {
         this.random = new Random();
         this.metricBean = newMetricBean();
         this.traceReporter = traceReporter;
-        this.ipNumber = StringTool.formatIp(
-                Objects.requireNonNull(Ipv4Util.getIp(pulsarConfig.envEth)));
+        this.ipNumber = StringTool.formatIp(System.getenv("POD_IP"));
     }
 
     @Override
