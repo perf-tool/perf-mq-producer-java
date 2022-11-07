@@ -114,4 +114,10 @@ public class PulsarConfig {
     @Value("${PULSAR_TLS_TRUSTSTORE_PASSWORD:}")
     public String tlsTrustStorePassword;
 
+    @Value("${ENV_ETH_NAME:eth0}")
+    public String envEth;
+
+    @Value("${TRACE_REPORT_SCENE:dummy}")
+    public String traceReportScene;
+
 }

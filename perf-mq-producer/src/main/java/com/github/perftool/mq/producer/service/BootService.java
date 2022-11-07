@@ -22,10 +22,6 @@ package com.github.perftool.mq.producer.service;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperConfig;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperSendThread;
 import com.github.perftool.mq.producer.common.module.SerializeType;
-import com.github.perftool.mq.producer.common.trace.mongo.MongoClientImpl;
-import com.github.perftool.mq.producer.common.trace.mongo.MongoConfig;
-import com.github.perftool.mq.producer.common.trace.redis.RedisClientImpl;
-import com.github.perftool.mq.producer.common.trace.redis.RedisConfig;
 import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.CommonConfig;
@@ -44,6 +40,10 @@ import com.github.perftool.mq.producer.pulsar.PulsarConfig;
 import com.github.perftool.mq.producer.pulsar.PulsarSendThread;
 import com.github.perftool.mq.producer.rocketmq.RocketMqConfig;
 import com.github.perftool.mq.producer.rocketmq.RocketMqThread;
+import io.github.perftool.trace.report.mongo.MongoConfig;
+import io.github.perftool.trace.report.mongo.MongoTraceReporter;
+import io.github.perftool.trace.report.redis.RedisConfig;
+import io.github.perftool.trace.report.redis.RedisTraceReporter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,12 +86,6 @@ public class BootService {
     @Autowired
     private MetricsService metricsService;
 
-    @Autowired
-    private MongoConfig mongoConfig;
-
-    @Autowired
-    private RedisConfig redisConfig;
-
     private final List<AbstractProduceThread> threads = new ArrayList<>();
 
     @PostConstruct
@@ -116,9 +110,9 @@ public class BootService {
                     case DUMMY -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
                             null));
                     case MONGO -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new MongoClientImpl(mongoConfig)));
+                            new MongoTraceReporter(MongoConfig.fromEnv())));
                     case REDIS -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new RedisClientImpl(redisConfig)));
+                            new RedisTraceReporter(RedisConfig.fromEnv())));
 
                 }
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
