@@ -29,9 +29,9 @@ import com.github.perftool.mq.producer.pulsar.util.PulsarUtils;
 import io.github.perftool.trace.module.SpanInfo;
 import io.github.perftool.trace.module.TraceBean;
 import io.github.perftool.trace.report.ITraceReporter;
+import io.github.perftool.trace.report.ReportUtil;
 import io.github.perftool.trace.util.InboundCounter;
 import io.github.perftool.trace.util.JacksonUtil;
-import io.github.perftool.trace.util.StringTool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.ClientBuilder;
 import org.apache.pulsar.client.api.MessageId;
@@ -62,8 +62,6 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private final ITraceReporter traceReporter;
 
-    private final String formattedIp;
-
     private final InboundCounter inboundCounter = new InboundCounter(999);
 
     private static final String AUTH_PLUGIN_CLASS_NAME = "org.apache.pulsar.client.impl.auth.AuthenticationKeyStoreTls";
@@ -76,7 +74,6 @@ public class PulsarSendThread extends AbstractProduceThread {
         this.random = new Random();
         this.metricBean = newMetricBean();
         this.traceReporter = traceReporter;
-        this.formattedIp = StringTool.formatIp(System.getenv("POD_IP"));
     }
 
     @Override
@@ -138,10 +135,7 @@ public class PulsarSendThread extends AbstractProduceThread {
                 TraceBean bean = new TraceBean();
                 byte[] message = RandomUtil.getRandomBytes(pulsarConfig.messageByte);
                 int idx = inboundCounter.get();
-                long currentTimeMillis = System.currentTimeMillis();
-                String traceId = String.format("%s-%s-%s-%d",
-                        pulsarConfig.traceReportScene,
-                        currentTimeMillis, formattedIp, idx);
+                String traceId = String.format("%s-%d", ReportUtil.traceIdPrefix(), idx);
                 bean.setTraceId(traceId);
                 SpanInfo spanInfo = new SpanInfo();
                 spanInfo.setSpanId(traceId);

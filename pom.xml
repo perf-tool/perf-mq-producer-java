@@ -43,7 +43,7 @@
         <apollo.version>2.0.1</apollo.version>
         <mqtt.version>1.2.5</mqtt.version>
         <mongo-java-driver.version>3.12.11</mongo-java-driver.version>
-        <perf-trace.version>0.0.4</perf-trace.version>
+        <perf-trace.version>0.0.5</perf-trace.version>
         <pulsar.verion>2.10.2</pulsar.verion>
         <!-- plugin -->
         <checkstyle-plugin.version>3.2.0</checkstyle-plugin.version>
