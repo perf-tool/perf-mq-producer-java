@@ -64,7 +64,7 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private final String formattedIp;
 
-    InboundCounter inboundCounter = new InboundCounter(999);
+    private final InboundCounter inboundCounter = new InboundCounter(999);
 
     private static final String AUTH_PLUGIN_CLASS_NAME = "org.apache.pulsar.client.impl.auth.AuthenticationKeyStoreTls";
 
