@@ -21,29 +21,26 @@ package com.github.perftool.mq.producer.service;
 
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperConfig;
 import com.github.perftool.mq.producer.bookkeeper.BookkeeperSendThread;
-import com.github.perftool.mq.producer.common.module.SerializeType;
-import com.github.perftool.mq.producer.common.trace.mongo.MongoClientImpl;
-import com.github.perftool.mq.producer.common.trace.mongo.MongoConfig;
-import com.github.perftool.mq.producer.common.trace.redis.RedisClientImpl;
-import com.github.perftool.mq.producer.common.trace.redis.RedisConfig;
-import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.common.AbstractProduceThread;
 import com.github.perftool.mq.producer.common.config.CommonConfig;
 import com.github.perftool.mq.producer.common.config.ThreadConfig;
 import com.github.perftool.mq.producer.common.metrics.MetricFactory;
+import com.github.perftool.mq.producer.common.module.ProduceType;
+import com.github.perftool.mq.producer.common.module.SerializeType;
 import com.github.perftool.mq.producer.common.service.MetricsService;
+import com.github.perftool.mq.producer.config.PfConfig;
 import com.github.perftool.mq.producer.http.HttpConfig;
 import com.github.perftool.mq.producer.http.HttpSendThread;
 import com.github.perftool.mq.producer.kafka.AbstractKafkaBytesSendThread;
-import com.github.perftool.mq.producer.kafka.KafkaConfig;
-import com.github.perftool.mq.producer.common.module.ProduceType;
 import com.github.perftool.mq.producer.kafka.AbstractKafkaStringSendThread;
+import com.github.perftool.mq.producer.kafka.KafkaConfig;
 import com.github.perftool.mq.producer.mqtt.MqttConfig;
 import com.github.perftool.mq.producer.mqtt.MqttSendThread;
 import com.github.perftool.mq.producer.pulsar.PulsarConfig;
 import com.github.perftool.mq.producer.pulsar.PulsarSendThread;
 import com.github.perftool.mq.producer.rocketmq.RocketMqConfig;
 import com.github.perftool.mq.producer.rocketmq.RocketMqThread;
+import io.github.perftool.trace.report.ReportUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,12 +83,6 @@ public class BootService {
     @Autowired
     private MetricsService metricsService;
 
-    @Autowired
-    private MongoConfig mongoConfig;
-
-    @Autowired
-    private RedisConfig redisConfig;
-
     private final List<AbstractProduceThread> threads = new ArrayList<>();
 
     @PostConstruct
@@ -112,15 +103,8 @@ public class BootService {
                 threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
                 log.info("{} trace reporter.", pfConfig.traceType);
-                switch (pfConfig.traceType) {
-                    case DUMMY -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            null));
-                    case MONGO -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new MongoClientImpl(mongoConfig)));
-                    case REDIS -> threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
-                            new RedisClientImpl(redisConfig)));
-
-                }
+                threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
+                            ReportUtil.getReporter()));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
                 threads.add(new RocketMqThread(i, metricFactory, threadConfig, rocketMqConfig));
             }

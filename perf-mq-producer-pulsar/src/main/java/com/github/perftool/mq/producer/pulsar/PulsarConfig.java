@@ -114,4 +114,7 @@ public class PulsarConfig {
     @Value("${PULSAR_TLS_TRUSTSTORE_PASSWORD:}")
     public String tlsTrustStorePassword;
 
+    @Value("${TRACE_REPORT_SCENE:default}")
+    public String traceReportScene;
+
 }
