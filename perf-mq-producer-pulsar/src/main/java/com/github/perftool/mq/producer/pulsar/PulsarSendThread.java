@@ -62,7 +62,7 @@ public class PulsarSendThread extends AbstractProduceThread {
 
     private final ITraceReporter traceReporter;
 
-    private final String ipNumber;
+    private final String formattedIp;
 
     InboundCounter inboundCounter = new InboundCounter(999);
 
@@ -76,7 +76,7 @@ public class PulsarSendThread extends AbstractProduceThread {
         this.random = new Random();
         this.metricBean = newMetricBean();
         this.traceReporter = traceReporter;
-        this.ipNumber = StringTool.formatIp(System.getenv("POD_IP"));
+        this.formattedIp = StringTool.formatIp(System.getenv("POD_IP"));
     }
 
     @Override
@@ -141,7 +141,7 @@ public class PulsarSendThread extends AbstractProduceThread {
                 long currentTimeMillis = System.currentTimeMillis();
                 String traceId = String.format("%s-%s-%s-%d",
                         pulsarConfig.traceReportScene,
-                        currentTimeMillis, ipNumber, idx);
+                        currentTimeMillis, formattedIp, idx);
                 bean.setTraceId(traceId);
                 SpanInfo spanInfo = new SpanInfo();
                 spanInfo.setSpanId(traceId);
