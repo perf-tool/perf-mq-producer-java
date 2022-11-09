@@ -20,7 +20,6 @@
 package com.github.perftool.mq.producer.config;
 
 import com.github.perftool.mq.producer.common.module.ProduceType;
-import com.github.perftool.mq.producer.common.module.TraceType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,5 @@ public class PfConfig {
 
     @Value("${PRODUCE_TYPE:DUMMY}")
     public ProduceType produceType;
-
-    @Value("${PRODUCE_TRACE_TYPE:DUMMY}")
-    public TraceType traceType;
 
 }

@@ -102,7 +102,6 @@ public class BootService {
             } else if (pfConfig.produceType.equals(ProduceType.MQTT)) {
                 threads.add(new MqttSendThread(i, metricFactory, threadConfig, mqttConfig));
             } else if (pfConfig.produceType.equals(ProduceType.PULSAR)) {
-                log.info("{} trace reporter.", pfConfig.traceType);
                 threads.add(new PulsarSendThread(i, metricFactory, threadConfig, pulsarConfig,
                             ReportUtil.getReporter()));
             } else if (pfConfig.produceType.equals(ProduceType.ROCKETMQ)) {
