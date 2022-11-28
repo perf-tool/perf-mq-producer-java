@@ -41,11 +41,11 @@ import com.github.perftool.mq.producer.pulsar.PulsarSendThread;
 import com.github.perftool.mq.producer.rocketmq.RocketMqConfig;
 import com.github.perftool.mq.producer.rocketmq.RocketMqThread;
 import io.github.perftool.trace.report.ReportUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
