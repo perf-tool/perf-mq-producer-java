@@ -17,7 +17,7 @@
 # under the License.
 #
 
-FROM perftool/compile:jdk17-mvn AS build
+FROM shoothzj/compile:jdk17-mvn AS build
 COPY . /opt/perf/compile
 WORKDIR /opt/perf/compile
 RUN mvn -B clean package -Dmaven.test.skip=true
