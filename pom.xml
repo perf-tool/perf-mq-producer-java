@@ -52,7 +52,7 @@
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
         <jacoco.version>0.8.8</jacoco.version>
         <puppycrawl.version>10.7.0</puppycrawl.version>
-        <spotbugs-maven-plugin.version>4.7.3.2</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.7.3.3</spotbugs-maven-plugin.version>
     </properties>
 
     <parent>
