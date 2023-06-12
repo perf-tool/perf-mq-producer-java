@@ -24,41 +24,49 @@ cd ..
 
 PF_HOME=`pwd`
 
-echo $PF_HOME
+echo "${PF_HOME}"
 
 mkdir -p /opt/perf/logs
 
 if [ -n "${PULSAR_JAR_VERSION}" ] && [ -n "${MAVEN_ADDRESS}" ]; then
   # delete original version jar of pulsar
-  rm -rf $PF_HOME/lib/pulsar-client*
-  rm -rf $PF_HOME/lib/pulsar-common*
-  rm -rf $PF_HOME/lib/pulsar-package-core*
-  rm -rf $PF_HOME/lib/pulsar-transaction-common*
+  rm -rf "${PF_HOME}"/lib/pulsar-client*
+  rm -rf "${PF_HOME}"/lib/pulsar-common*
+  rm -rf "${PF_HOME}"/lib/pulsar-package-core*
+  rm -rf "${PF_HOME}"/lib/pulsar-transaction-common*
 
   # download specify version jar of pulsar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-admin-api/"${PULSAR_JAR_VERSION}"/pulsar-client-admin-api-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-admin-original/"${PULSAR_JAR_VERSION}"/pulsar-client-admin-original-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-api/"${PULSAR_JAR_VERSION}"/pulsar-client-api-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-original/"${PULSAR_JAR_VERSION}"/pulsar-client-original-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-common/"${PULSAR_JAR_VERSION}"/pulsar-common-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-package-core/"${PULSAR_JAR_VERSION}"/pulsar-package-core-"${PULSAR_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-transaction-common/"${PULSAR_JAR_VERSION}"/pulsar-transaction-common-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-admin-api/"${PULSAR_JAR_VERSION}"/pulsar-client-admin-api-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-admin-original/"${PULSAR_JAR_VERSION}"/pulsar-client-admin-original-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-api/"${PULSAR_JAR_VERSION}"/pulsar-client-api-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-client-original/"${PULSAR_JAR_VERSION}"/pulsar-client-original-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-common/"${PULSAR_JAR_VERSION}"/pulsar-common-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-package-core/"${PULSAR_JAR_VERSION}"/pulsar-package-core-"${PULSAR_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/pulsar/pulsar-transaction-common/"${PULSAR_JAR_VERSION}"/pulsar-transaction-common-"${PULSAR_JAR_VERSION}".jar
 fi
 
 if [ -n "${BOOKKEEPER_JAR_VERSION}" ] && [ -n "${MAVEN_ADDRESS}" ]; then
   # delete original version jar of bookkeeper
-  rm -rf $PF_HOME/lib/bookkeeper-common-allocator*
+  rm -rf "${PF_HOME}"/lib/bookkeeper-common-allocator*
   # download specify version jar of bookkeeper
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/bookkeeper/bookkeeper-common-allocator/"${BOOKKEEPER_JAR_VERSION}"/bookkeeper-common-allocator-"${BOOKKEEPER_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/bookkeeper/bookkeeper-common-allocator/"${BOOKKEEPER_JAR_VERSION}"/bookkeeper-common-allocator-"${BOOKKEEPER_JAR_VERSION}".jar
 fi
 
 if [ -n "${APOLLO_JAR_VERSION}" ] && [ -n "${MAVEN_ADDRESS}" ]; then
-  rm -rf $PF_HOME/lib/apollo*
+  rm -rf "${PF_HOME}"/lib/apollo*
 
   # download specify version jar of apollo
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-client/"${APOLLO_JAR_VERSION}"/apollo-client-"${APOLLO_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-core/"${APOLLO_JAR_VERSION}"/apollo-core-"${APOLLO_JAR_VERSION}".jar
-  wget -P $PF_HOME/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-openapi/"${APOLLO_JAR_VERSION}"/apollo-openapi-"${APOLLO_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-client/"${APOLLO_JAR_VERSION}"/apollo-client-"${APOLLO_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-core/"${APOLLO_JAR_VERSION}"/apollo-core-"${APOLLO_JAR_VERSION}".jar
+  wget -P "${PF_HOME}"/lib  --no-check-certificate "${MAVEN_ADDRESS}"/com/ctrip/framework/apollo/apollo-openapi/"${APOLLO_JAR_VERSION}"/apollo-openapi-"${APOLLO_JAR_VERSION}".jar
+fi
+
+if [ -n "${KAFKA_JAR_VERSION}" ] && [ -n "${MAVEN_ADDRESS}" ]; then
+  rm -rf "${PF_HOME}"/lib/kafka-client*
+
+  # download specify version jar of kafka
+  # such as: https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar
+  wget -P "${PF_HOME}"/lib --no-check-certificate "${MAVEN_ADDRESS}"/org/apache/kafka/kafka-clients/"${KAFKA_JAR_VERSION}"/kafka-clients-"${KAFKA_JAR_VERSION}".jar
 fi
 
 # memory option
