@@ -33,6 +33,7 @@ import io.github.perftool.trace.report.ReportUtil;
 import io.github.perftool.trace.util.InboundCounter;
 import io.github.perftool.trace.util.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pulsar.client.api.AuthenticationFactory;
 import org.apache.pulsar.client.api.ClientBuilder;
 import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
@@ -82,14 +83,21 @@ public class PulsarSendThread extends AbstractProduceThread {
                 .memoryLimit(pulsarConfig.memoryLimitMb, SizeUnit.MEGA_BYTES)
                 .ioThreads(pulsarConfig.pulsarIoThreads)
                 .maxConcurrentLookupRequests(pulsarConfig.pulsarMaxConcurrentLookupRequests);
+        if (pulsarConfig.authTokenEnable) {
+            clientBuilder.authentication(AuthenticationFactory.token(pulsarConfig.authToken));
+        }
+        if (!pulsarConfig.secureConnectionEnable) {
+            clientBuilder.allowTlsInsecureConnection(true)
+                    .enableTlsHostnameVerification(false);
+        }
         if (pulsarConfig.tlsEnable) {
             Map<String, String> map = new HashMap<>();
             map.put("keyStoreType", "JKS");
             map.put("keyStorePath", pulsarConfig.keyStorePath);
             map.put("keyStorePassword", pulsarConfig.keyStorePassword);
-            pulsarClient = clientBuilder.allowTlsInsecureConnection(true).serviceUrl(String.format("%s://%s:%s",
+            pulsarClient = clientBuilder.serviceUrl(String.format("%s://%s:%s",
                             pulsarConfig.protocol, pulsarConfig.host, pulsarConfig.port))
-                    .enableTlsHostnameVerification(false).useKeyStoreTls(true)
+                    .useKeyStoreTls(true)
                     .tlsTrustStoreType("JKS")
                     .tlsTrustStorePath(pulsarConfig.tlsTrustStorePath)
                     .tlsTrustStorePassword(pulsarConfig.tlsTrustStorePassword)

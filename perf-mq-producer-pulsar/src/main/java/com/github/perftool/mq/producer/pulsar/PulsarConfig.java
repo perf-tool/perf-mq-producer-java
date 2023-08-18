@@ -114,6 +114,15 @@ public class PulsarConfig {
     @Value("${PULSAR_TLS_TRUSTSTORE_PASSWORD:}")
     public String tlsTrustStorePassword;
 
+    @Value("${PULSAR_AUTH_TOKEN_ENABLE:false}")
+    public boolean authTokenEnable;
+
+    @Value("${PULSAR_AUTH_TOKEN:}")
+    public String authToken;
+
+    @Value("${PULSAR_SECURE_CONNECTION_ENABLE:false}")
+    public boolean secureConnectionEnable;
+
     @Value("${TRACE_REPORT_SCENE:default}")
     public String traceReportScene;
 
