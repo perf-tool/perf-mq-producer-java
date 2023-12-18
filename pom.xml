@@ -48,7 +48,7 @@
         <pulsar.verion>3.1.1</pulsar.verion>
         <!-- plugin -->
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
-        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <compiler-plugin.version>3.12.0</compiler-plugin.version>
         <jacoco.version>0.8.11</jacoco.version>
         <puppycrawl.version>10.12.5</puppycrawl.version>
         <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
