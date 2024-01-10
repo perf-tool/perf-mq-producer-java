@@ -40,7 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- dependency -->
         <annotations.version>23.0.0</annotations.version>
-        <apollo.version>2.1.0</apollo.version>
+        <apollo.version>2.2.0</apollo.version>
         <bookkeeper.version>4.16.3</bookkeeper.version>
         <mqtt.version>1.2.5</mqtt.version>
         <mongo-java-driver.version>3.12.14</mongo-java-driver.version>
