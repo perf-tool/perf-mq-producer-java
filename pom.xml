@@ -45,7 +45,7 @@
         <mqtt.version>1.2.5</mqtt.version>
         <mongo-java-driver.version>3.12.14</mongo-java-driver.version>
         <perf-trace.version>0.0.9</perf-trace.version>
-        <pulsar.verion>3.1.1</pulsar.verion>
+        <pulsar.verion>3.1.2</pulsar.verion>
         <!-- plugin -->
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <compiler-plugin.version>3.12.1</compiler-plugin.version>
