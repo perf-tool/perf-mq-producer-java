@@ -126,4 +126,7 @@ public class PulsarConfig {
     @Value("${TRACE_REPORT_SCENE:default}")
     public String traceReportScene;
 
+    @Value("${COMPRESSION_TYPE:NONE}")
+    public String compressionType;
+
 }
