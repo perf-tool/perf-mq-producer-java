@@ -21,7 +21,6 @@ package com.github.perftool.mq.producer.bookkeeper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.bookkeeper.client.AsyncCallback;
-import org.apache.bookkeeper.client.BKException;
 import org.apache.bookkeeper.client.BookKeeper;
 import org.apache.bookkeeper.client.LedgerHandle;
 
@@ -43,12 +42,10 @@ public class RotateLedger {
 
     private volatile LedgerHandle ledgerHandle;
 
-    private long lastRotateTime;
-
     private long nextRotateTime;
 
     public RotateLedger(BookKeeper bookKeeper,
-                        BookkeeperConfig conf) throws BKException, InterruptedException {
+                        BookkeeperConfig conf) {
         this.bookKeeper = bookKeeper;
         this.conf = conf;
         this.random = new Random();
@@ -84,7 +81,7 @@ public class RotateLedger {
         } catch (Exception e) {
             log.error("create ledger error", e);
         }
-        this.lastRotateTime = System.currentTimeMillis();
+        long lastRotateTime = System.currentTimeMillis();
         this.nextRotateTime = lastRotateTime + rotateSeconds * 1000L + random.nextInt(randomSecondsOffset * 1000);
     }
 
