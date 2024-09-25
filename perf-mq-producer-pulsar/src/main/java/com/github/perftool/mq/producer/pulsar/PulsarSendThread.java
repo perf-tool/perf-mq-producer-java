@@ -39,6 +39,7 @@ import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.SizeUnit;
+import org.apache.pulsar.client.api.CompressionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +117,9 @@ public class PulsarSendThread extends AbstractProduceThread {
                         .batchingMaxBytes(pulsarConfig.batchingMaxBytes)
                         .batchingMaxMessages(pulsarConfig.batchingMaxMessages)
                         .batchingMaxPublishDelay(pulsarConfig.batchingMaxPublishDelay, TimeUnit.MILLISECONDS)
-                        .topic(topic).create();
+                        .topic(topic)
+                        .compressionType(CompressionType.valueOf(pulsarConfig.compressionType))
+                        .create();
                 producers.add(producer);
             }
         }
