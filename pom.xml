@@ -50,7 +50,7 @@
         <checkstyle-plugin.version>3.5.0</checkstyle-plugin.version>
         <compiler-plugin.version>3.12.1</compiler-plugin.version>
         <jacoco.version>0.8.11</jacoco.version>
-        <puppycrawl.version>10.12.7</puppycrawl.version>
+        <puppycrawl.version>10.18.1</puppycrawl.version>
         <spotbugs-maven-plugin.version>4.8.6.4</spotbugs-maven-plugin.version>
     </properties>
 
